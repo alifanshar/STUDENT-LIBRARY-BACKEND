@@ -53,7 +53,7 @@ class ReadingProgress {
   }
 
   static async getRecentlyCompleted(limit = 5) {
-    const [rows] = await db.execute(`
+    const [rows] = await db.query(`
       SELECT 
         b.title,
         b.author,

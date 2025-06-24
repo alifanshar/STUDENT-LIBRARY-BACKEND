@@ -6,6 +6,7 @@ require('dotenv').config();
 const bookRoutes = require('./routes/bookRoutes');
 const progressRoutes = require('./routes/progressRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const authRoutes = require('./routes/authRoutes')
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use('/api/books', bookRoutes);
 app.use('/api/progress', progressRoutes);
 app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/auth', authRoutes)
 
 // Basic route
 app.get('/', (req, res) => {
@@ -26,7 +28,8 @@ app.get('/', (req, res) => {
     endpoints: {
       books: '/api/books',
       progress: '/api/progress',
-      dashboard: '/api/dashboard'
+      dashboard: '/api/dashboard',
+      auth: '/api/auth'
     }
   });
 });
