@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 
 // Konfigurasi transporter email
 const createTransporter = () => {
-    return nodemailer.createTransporter({
+    return nodemailer.createTransport({
         service: 'gmail', // Atau gunakan provider lain seperti 'outlook', 'yahoo'
         auth: {
             user: process.env.EMAIL_USER,
@@ -66,7 +66,7 @@ const sendOTPEmail = async (email, otp, purpose, userName = '') => {
     };
 
     try {
-        const info = await transporter.sendMail(mailOptions);
+        const info = transporter.sendMail(mailOptions);
         console.log('Email sent successfully:', info.messageId);
         return { success: true, messageId: info.messageId };
     } catch (error) {

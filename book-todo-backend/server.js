@@ -29,7 +29,7 @@ app.get('/', (req, res) => {
       books: '/api/books',
       progress: '/api/progress',
       dashboard: '/api/dashboard',
-      auth: '/api/auth'
+      auth: '/api/auth/profile'
     }
   });
 });

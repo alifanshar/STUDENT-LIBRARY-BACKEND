@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const User = require('../models/User');
 const OTP = require('../models/OTP');
 const { sendOTPEmail } = require('../config/email');
+const db = require('../config/database');
 
 // Register
 const register = async (req, res) => {
@@ -111,27 +112,27 @@ const verifyRegistration = async (req, res) => {
 const login = async (req, res) => {
     try {
         const { email, password } = req.body;
-
+        
         if (!email || !password) {
             return res.status(400).json({
                 success: false,
                 message: 'Email dan password wajib diisi'
             });
         }
-
+        
         // Cari user
         const [users] = await db.execute(
             'SELECT * FROM users WHERE email = ?',
             [email]
         );
-
+        
         if (users.length === 0) {
             return res.status(401).json({
                 success: false,
                 message: 'Email atau password salah'
             });
         }
-
+        
         const user = users[0];
 
         // Cek apakah user sudah terverifikasi
@@ -152,7 +153,7 @@ const login = async (req, res) => {
         }
 
         // Generate dan simpan OTP untuk login
-        const otp = generateOTP();
+        const otp = OTP.generateCode();
         const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 menit
 
         await db.execute(
@@ -292,8 +293,8 @@ const resendOTP = async (req, res) => {
         );
 
         // Generate OTP baru
-        const otp = generateOTP();
-        const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 menit
+        const otp = OTP.generateCode();
+        const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 menit
 
         await db.execute(
             'INSERT INTO otp_codes (user_id, code, purpose, expires_at) VALUES (?, ?, ?, ?)',
