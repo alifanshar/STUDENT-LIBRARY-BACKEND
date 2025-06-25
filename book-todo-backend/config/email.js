@@ -47,7 +47,7 @@ const sendOTPEmail = async (email, otp, purpose, userName = '') => {
                     </div>
                     
                     <p style="color: #dc3545; font-weight: bold; margin-bottom: 10px;">
-                        ⏰ Kode ini akan kedaluwarsa dalam 5 menit
+                        ⏰ Kode ini akan kedaluwarsa dalam 10 menit
                     </p>
                     
                     <p style="color: #666; font-size: 14px; margin-top: 20px;">
@@ -66,7 +66,7 @@ const sendOTPEmail = async (email, otp, purpose, userName = '') => {
     };
 
     try {
-        const info = transporter.sendMail(mailOptions);
+        const info = await transporter.sendMail(mailOptions);
         console.log('Email sent successfully:', info.messageId);
         return { success: true, messageId: info.messageId };
     } catch (error) {
